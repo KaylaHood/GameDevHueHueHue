@@ -9,10 +9,14 @@ public class PlayerMovement : MonoBehaviour {
     public float movementSpeed = 600;
     public float jumpVelocity = 600;
     private bool isGrounded = false;
+    private GameObject playerCamera;
+    private Vector3 newCamPos;
 
 	// Use this for initialization
 	void Start () {
         rb = gameObject.GetComponent<Rigidbody2D>();
+        playerCamera = GameObject.Find("Camera");
+        newCamPos = playerCamera.transform.position;
 	}
 	
 	// Update is called once per frame
@@ -33,6 +37,8 @@ public class PlayerMovement : MonoBehaviour {
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             isGrounded = false;
         }
+        newCamPos = new Vector3(transform.position.x, newCamPos.y, newCamPos.z);
+        playerCamera.transform.position = Vector3.LerpUnclamped(playerCamera.transform.position, newCamPos, Time.deltaTime * 1.5f);
 
 	}
 
@@ -41,6 +47,7 @@ public class PlayerMovement : MonoBehaviour {
         if(other.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             isGrounded = true;
+            newCamPos = new Vector3(playerCamera.transform.position.x, transform.position.y, playerCamera.transform.position.z);
         }
     }
 }

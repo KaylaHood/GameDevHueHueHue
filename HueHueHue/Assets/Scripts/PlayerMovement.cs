@@ -11,11 +11,12 @@ public class PlayerMovement : MonoBehaviour {
     private bool isGrounded = false;
     private GameObject playerCamera;
     private Vector3 newCamPos;
+    private float cameraTransitionSpeed = 2f;
 
 	// Use this for initialization
 	void Start () {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        playerCamera = GameObject.Find("Camera");
+        playerCamera = Camera.main.gameObject;
         newCamPos = playerCamera.transform.position;
 	}
 	
@@ -38,7 +39,7 @@ public class PlayerMovement : MonoBehaviour {
             isGrounded = false;
         }
         newCamPos = new Vector3(transform.position.x, newCamPos.y, newCamPos.z);
-        playerCamera.transform.position = Vector3.LerpUnclamped(playerCamera.transform.position, newCamPos, Time.deltaTime * 1.5f);
+        playerCamera.transform.position = Vector3.LerpUnclamped(playerCamera.transform.position, newCamPos, Time.deltaTime * cameraTransitionSpeed);
 
 	}
 
